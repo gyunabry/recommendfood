@@ -38,6 +38,9 @@ public class RecActivity extends AppCompatActivity {
     private List<Food> foodItemList = new ArrayList<>();
 
     String foodTitle;
+    Intent getIntent;
+    String foodKind;
+    String collectionPath = "food";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,9 @@ public class RecActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+
+        getIntent = getIntent();
+        foodKind = getIntent.getStringExtra("foodkind");
 
         loadFoodItems();
 
@@ -71,7 +77,7 @@ public class RecActivity extends AppCompatActivity {
     }
 
     private void loadFoodItems() {
-        db.collection("food")
+        db.collection(collectionPath)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
