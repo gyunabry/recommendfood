@@ -162,18 +162,20 @@ public class MapActivity extends AppCompatActivity {
             public void onResponse(Call<KakaoSearchResponse> call, Response<KakaoSearchResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Document> places = response.body().getDocuments();
+                    if (places.isEmpty()) {
+                        Toast.makeText(MapActivity.this, "주변에 해당 음식점이 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
                     for (Document place : places) {
                         double latitude = Double.parseDouble(place.getY());
                         double longitude = Double.parseDouble(place.getX());
                         LatLng placeLocation = LatLng.from(latitude, longitude);
                         String place_name = String.valueOf(place.getPlaceName());
 
-                        Toast.makeText(MapActivity.this, "가게 이름 : " +place_name + "\n가게 위치 : " + placeLocation, Toast.LENGTH_SHORT).show();
-
                         showIconLabel("placelabel" + num, place_name ,placeLocation);
                         num += 1;
                     }
-                } else {
+                }
+                else {
                     Log.d("KakaoAPI", "No search results found.");
                     Toast.makeText(MapActivity.this, "No search results found.", Toast.LENGTH_SHORT).show();
                 }

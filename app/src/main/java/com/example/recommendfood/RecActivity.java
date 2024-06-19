@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,7 +41,7 @@ public class RecActivity extends AppCompatActivity {
     String foodTitle;
     Intent getIntent;
     String foodKind;
-    String collectionPath = "food";
+    // String collectionPath = "korean";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class RecActivity extends AppCompatActivity {
     }
 
     private void loadFoodItems() {
-        db.collection(collectionPath)
+        db.collection(foodKind)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -124,6 +125,11 @@ public class RecActivity extends AppCompatActivity {
                             Log.e(TAG, "Failed to get download URL.", e);
                         }
                     });
+
+            foodItemList.remove(index);
+            if (foodItemList.isEmpty()) {
+                Toast.makeText(this, "마지막 음식입니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
